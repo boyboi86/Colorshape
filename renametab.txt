@@ -1,0 +1,18 @@
+Sub RenameTab()
+'
+' RenameTab Macro
+' Macro created 29/12/2011 by Great Leow Wei Xiang
+'
+
+'
+
+
+    For i = 2 To Sheets.Count
+        If Worksheets(i).Range("C2").Value <> "" Then
+            Sheets(i).Name = Worksheets(i).Range("C2").Value
+                Else
+                Sheets(i).Name = "Default (" & i & ")"
+        End If
+    Next
+
+End Sub

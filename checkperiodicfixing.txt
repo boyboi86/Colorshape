@@ -1,0 +1,77 @@
+Option Explicit
+
+Dim wsOV As Worksheet, wsTC As Worksheet, wsMR As Worksheet
+Dim rngD As Range, rngA As Range
+Dim lstRowD As Long, lstRowA As Long, iRow As Long
+Dim lstCol As Long, xCol As Long, xRow As Long
+Dim isMatch As Boolean
+
+Sub CheckPeriodicFixing()
+'
+' CheckPeriodicFixing Macro
+' Macro Created by GreatAnalyst Leow Wei Xiang
+'
+
+'Macro Created by GreatAnalyst Leow Wei Xiang
+Set wsOV = Sheets("Original Value")
+Set wsTC = Sheets("Trade Confirmation")
+Set wsMR = Sheets("Missing Trade")
+
+lstRowA = wsTC.Range("B" & Rows.Count).End(xlUp).Row
+lstRowD = wsOV.Range("B" & Rows.Count).End(xlUp).Row
+iRow = wsMR.Range("B" & Rows.Count).End(xlUp).Row
+
+lstCol = wsTC.Cells(1, Columns.Count).End(xlToLeft).Column
+
+wsTC.Range(wsTC.Cells(1, 1), wsTC.Cells(1, lstCol)).Copy
+wsMR.Range("A1").PasteSpecial
+Application.CutCopyMode = False
+
+iRow = wsMR.Range("B" & Rows.Count).End(xlUp).Row
+
+For Each rngA In wsTC.Range("B2:B" & lstRowA)
+    wsTC.Range(wsTC.Cells(rngA.Row, 2), wsTC.Cells(rngA.Row, lstCol)).Interior.ColorIndex = xlNone
+    xRow = 0
+    GoSub findMatch
+    If xRow > 0 Then
+        isMatch = True
+        For xCol = 2 To lstCol
+            If wsTC.Cells(rngA.Row, xCol) <> wsOV.Cells(xRow, xCol) Then
+                isMatch = False
+                wsTC.Cells(rngA.Row, xCol).Interior.Color = vbRed
+            End If
+        Next xCol
+        If isMatch = True Then
+            wsTC.Range(wsTC.Cells(rngA.Row, 2), wsTC.Cells(rngA.Row, lstCol)).Interior.Color = vbGreen
+        End If
+    Else
+        iRow = iRow + 1
+        wsTC.Range(wsTC.Cells(rngA.Row, 1), wsTC.Cells(rngA.Row, lstCol)).Copy
+        wsMR.Range("A" & iRow).PasteSpecial
+        Application.CutCopyMode = False
+    End If
+Next rngA
+
+wsMR.Cells.Columns.AutoFit
+wsOV.Cells.Columns.AutoFit
+wsTC.Cells.Columns.AutoFit
+GoTo exitSub
+
+findMatch:
+xRow = 0
+For Each rngD In wsOV.Range("B2:B" & lstRowD)
+    If rngA.Value = rngD.Value Then
+        xRow = rngD.Row
+        Exit For
+    End If
+Next rngD
+
+Return
+
+exitSub:
+
+End Sub
+
+
+
+

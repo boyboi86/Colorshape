@@ -1,0 +1,40 @@
+Sub DataConversion()
+'
+' DataConversion Macro
+' Use this only at Worksheet "DataSheet"
+'
+
+'
+    Columns("B:I").Select
+    Selection.Delete Shift:=xlToLeft
+    Columns("A:L").Select
+    Range("L1").Activate
+    Selection.Copy
+    Sheets("Trade Confirmation").Select
+    Columns("B:B").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Columns("N:O").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Columns("G:G").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Columns("P:P").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Columns("M:M").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Columns("Q:Q").Select
+    Application.CutCopyMode = False
+    Selection.Copy
+    Columns("E:E").Select
+    Selection.PasteSpecial Paste:=xlPasteValues, Operation:=xlNone, SkipBlanks _
+        :=False, Transpose:=False
+    Columns("N:Q").Select
+    Application.CutCopyMode = False
+    Selection.Delete Shift:=xlToLeft
+    
+
+End Sub
